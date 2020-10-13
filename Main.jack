@@ -11,6 +11,11 @@ class Main {
 
         let size = Keyboard.readInt("Cell size? ");
         let grid = Grid.new(size);
+
+        //debug checkpoint (failed)
+        do Output.printString("grid created");
+        do Sys.wait(3000);
+
         do Screen.clearScreen();
         // let startLn = Keyboard.readInt("Starting square?");
         // do Screen.clearScreen();
