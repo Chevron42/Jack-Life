@@ -10,8 +10,9 @@ Jack is a Java-like barebones object-oriented language that runs on the Hack vir
 
 ## Launching the Program
 
-1. Run the Hack virtual machine platform by launching VMEmulator&#46;sh from Terminal
-2. Click Load Program (folder icon)and select the entire JackLife directory (must contain all the .vm files)
+1. Run the Hack virtual machine platform by launching VMEmulator&#46;sh (in /utils) from Terminal 
+   - (you can also download this and the other shell utility files from the nand2tetris course website [itself](https://www.nand2tetris.org/software) if that feels better)
+2. Click Load Program (folder icon) and select the entire JackLife directory (must contain all the .vm files)
 3. Click "Yes" on the confirmation message saying "No implementation was found..." (this is allowing the emulator to use built-in OS classes like `Keyboard` and `Screen`)
 3. Select "No animation" in the "Animation" dropdown menu (unless you feel like watching thousands of VM stack-manipulating operations go by for hours)
 4. Click the Run button (double right arrow) or press F5 to run the program!
