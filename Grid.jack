@@ -9,6 +9,9 @@ class Grid {
         let height = 256/cellSize;
         let area = width * height;
         //cell sizes under 4 result in cell count that overflows Jack int type
+        //perhaps this is an indication that the array structure for grid handling is stupid
+        //maybe grid needs to be stored as bits (individual ints for each bool is a bit silly after all) like Screen registers
+    
 
         let cells = Array.new(area);
         return this;
