@@ -8,6 +8,8 @@ class Grid {
         let width = 512/cellSize;
         let height = 256/cellSize;
         let area = width * height;
+        //cell sizes under 4 result in cell count that overflows Jack int type
+
         let cells = Array.new(area);
         return this;
     }
