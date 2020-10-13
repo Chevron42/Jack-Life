@@ -13,8 +13,8 @@ class Main {
         let grid = Grid.new(size);
 
         //debug checkpoint
-        do Output.printString("grid created");
-        do Sys.wait(3000);
+        // do Output.printString("grid created");
+        // do Sys.wait(3000);
 
         do Screen.clearScreen();
         // let startLn = Keyboard.readInt("Starting square?");
