@@ -1,0 +1,16 @@
+class MyMath {
+
+    function int mod(int x, int y) {
+        return (x - (y * (x/y)) );
+    }
+
+    function int pow(int x, int y) {
+        var int ret;
+        let ret = 1;
+        while (y > 0) {
+            let ret = ret * x;
+            let y = y - 1;
+        }
+        return ret;
+    }
+}

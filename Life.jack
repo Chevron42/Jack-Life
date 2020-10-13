@@ -1,0 +1,19 @@
+class Life {
+    field Grid grid;
+
+    constructor Life new(Grid in) {
+        let grid = in;
+        return this;
+    }
+
+    method void step() {
+        do grid.step();
+        do grid.drawGrid();
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

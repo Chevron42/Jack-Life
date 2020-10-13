@@ -1,0 +1,275 @@
+class Grid {
+
+    field int cellSize, width, height, area;
+    field Array cells;
+
+    constructor Grid new(int size) {
+        let cellSize = size;
+        let width = 512/cellSize;
+        let height = 256/cellSize;
+        let area = width * height;
+        let cells = Array.new(area);
+        return this;
+    }
+
+    //getters
+    method Array cells() {
+        return cells;
+    }
+    method Array cell(int i) {
+        return cells[i];
+    }
+    method int area() {
+        return area;
+    }
+    method int cellSize() {
+        return cellSize;
+    }
+
+
+    //gets position in 1D array of cells from (x,y)
+    method int getPos(int x, int y) {
+        return ((width * y) + x);
+    }
+
+    //gets (x,y) position from a 1D position
+    method Array getXY(int position) {
+        var Array coordinates;
+        var int x, y;
+        let coordinates = Array.new(2);
+        let x = MyMath.mod(position, width);
+        let y = position/width;
+        let coordinates[0] = x;
+        let coordinates[1] = y;
+        return coordinates;
+    }
+
+    //return 1D position of center cell
+    method int center() {
+        return getPos((width/2), (height/2));
+    }
+    //return (x,y) position of center cell
+    method Array centerXY() {
+        return getXY(center());
+    }
+
+    /* Cell fill value set methods */
+
+    //set cell to be filled
+    method void set(int x, int y) {
+        var int pos;
+        let pos = getPos(x, y);
+        let cells[pos] = true;
+        return;
+    }
+    method void setPos(int pos){
+        let cells[pos] = true;
+        return;
+    }
+    //set all cells to be filled (debugging/shortcut)
+    method void setAll() {
+        var int i;
+        var Array coord;
+        let i = 0;
+        while (i < area) {
+            let coord = getXY(i);
+            do set(coord[0], coord[1]);
+            let i = i + 1;
+        }
+        do coord.dispose();
+        return;
+    }
+    //set cell to be blank
+    method void unSet(int x, int y) {
+        var int pos;
+        let pos = getPos(x, y);
+        let cells[pos] = false;
+        return;
+    }
+    method void unSetPos(int pos) {
+        let cells[pos] = false;
+        return;
+    }
+    //set all cells blank
+    method void unSetAll() {
+        var int i;
+        var Array coord;
+        let i = 0;
+        while (i < area) {
+            let coord = getXY(i);
+            do unSet(coord[0], coord[1]);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    //Draw grid based on current cell array bools
+    method void drawGrid() {
+        var int pos, i;
+        while (pos < area) {
+            do drawPos(pos);
+            let pos = pos + 1;
+        }
+        return;
+    }
+
+    method void drawXY(int x, int y) {
+        var int pos;
+        let pos = getPos(x, y);
+        do drawPos(pos);
+        return;
+    }
+    method void drawPos(int pos) {
+        var int x, y;
+        var Array coord;
+        if (pos > area) {
+            return;
+        }
+        let coord  = getXY(pos);
+        let x = coord[0];
+        let y = coord[1];
+        do coord.dispose();
+        do Screen.setColor(cells[pos]);
+        do Screen.drawRectangle(x * cellSize, y * cellSize, ((x + 1) * cellSize) -1 , ((y + 1) * cellSize) -1);
+        return;
+    }
+
+    method void drawCell(int x, int y, bool fill) {
+        var int pos;
+        let pos = getPos(x, y);
+        //don't draw if cell goes past screen edge
+        if (pos > 512) {
+            return;
+        }
+        do Screen.setColor(cells[pos]);
+        do Screen.drawRectangle(x * cellSize, y * cellSize, ((x + 1) * cellSize) -1 , ((y + 1) * cellSize) -1);
+        return;
+    }
+
+
+
+     //methods which return 1D value corresponding to directions from current value; should be chainable
+    method int left(int position) {
+        return (((position/width) * width) + MyMath.mod((width + (position - 1)), width));
+    }
+    method int right(int position) {
+        return (((position/width) * width) + MyMath.mod((width + (position + 1)), width));
+    }
+    method int up(int position) {
+        return 
+            (MyMath.mod(position, width) + (     // pos % width ==> column +
+                MyMath.mod( height + ((position/width) - 1), height) //(h + r-1) % h; (new row above)
+                * width)); // overall current column + new row * width of each row
+    }
+    method int down(int position) {
+        return 
+            (MyMath.mod(position, width) + (     // pos % width ==> column +
+                MyMath.mod( height + ((position/width) + 1), height) //(h + r+1) % h; (new row below)
+                * width)); // overall current column + new row * width of each row
+    }
+
+    //array of neighbor positions (indexes in cells array) of a given position, clockwise from upper left
+    method Array neighbors(int position) {
+        var Array ret;
+        let ret = Array.new(8);
+        let ret[0] = left(up(position));
+        let ret[1] = up(position);
+        let ret[2] = right(up(position));
+        let ret[3] = right(position);
+        let ret[4] = right(down(position));
+        let ret[5] = down(position);
+        let ret[6] = left(down(position));
+        let ret[7] = left(position);
+
+        return ret;
+    }
+
+    //test method to see if neighbors works
+    method void setNeighbors(int pos) {
+        var int i;
+        var Array ns;
+        let ns = neighbors(pos);
+        while (i < 8) {
+            let cells[ns[i]] = true;
+            let i = i + 1;
+        }
+        do ns.dispose();
+        return;
+    }
+
+    //number of currently live neighbors a given position has
+    method int liveNeighbors(int pos) {
+        var int i, l;
+        var Array ns;
+        let l = 0;
+        let i = 0;
+        let ns = neighbors(pos);
+        while (i < 8) {
+            if (cells[ns[i]]) {
+                let l = l + 1;
+            }
+            let i = i + 1;
+        }
+        do ns.dispose();
+        return l;
+    }
+
+    //calculate list of live cells for next frame
+    method Array nextGen() {
+        var Array next;
+        var int i, lns;
+        let i = 0;
+        let next = Array.new(area);
+        while (i < area) {
+            let lns = liveNeighbors(i);
+            //debug print neighbor count
+            // do Output.printInt(lns);
+            let next[i] = false;
+            if (cells[i]) {
+                //a live cell with 2 or 3 neighbors survives
+                if ((lns = 2) | (lns = 3)) {
+                    let next[i] = true;
+                }
+            }
+            //dead cells with 3 neighbors gain life
+            else {
+                if (lns = 3) {
+                    let next[i] = true;
+                }
+            }
+            let i = i + 1;
+        }
+        let i = 0;
+        // while (i < area) {
+        //     do Output.printInt(next[i]);
+        //     let i = i + 1;
+        // }
+        return next;
+    }
+
+    //replace current board with new one (just the array, doesn't redraw)
+    method void step() {
+        var Array temp;
+        var int i;
+        let i = 0;
+        let temp = nextGen();
+        // do cells.dispose();
+        // let cells = temp;
+        while (i < area) {
+            
+            let cells[i] = temp[i];
+            let i = i + 1;
+        }
+        do temp.dispose();
+        return;
+    }
+
+    
+    //dispose grid object
+    method void dispose() {
+        do Memory.deAlloc(cells);
+        do Memory.deAlloc(this);
+        return;
+    }
+
+}

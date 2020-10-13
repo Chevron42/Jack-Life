@@ -1,0 +1,102 @@
+class Mover {
+    field Grid grid;
+    field int pos;
+    field bool draw, listen, done;
+    
+    constructor Mover new(Grid g) {
+        let grid = g;
+        let pos = grid.center();
+        do grid.setPos(pos);
+        let draw = false;
+        let listen = true;
+        return this;
+    }
+
+    //in draw mode, will leave trail of active grid squares
+    //out of draw mode, will erase trails
+    method void mode() {
+        let draw = ~draw;
+        return;
+    }
+
+    method void moveLeft() {
+        if (~draw) {
+            do grid.unSetPos(pos);
+            do grid.drawPos(pos);
+        }
+        let pos = grid.left(pos);
+        do grid.setPos(pos);
+        return;
+    }
+    method void moveRight() {
+        if (~draw) {
+            do grid.unSetPos(pos);
+            do grid.drawPos(pos);
+        }
+        let pos = grid.right(pos);
+        do grid.setPos(pos);
+        return;
+    }
+    method void moveUp() {
+        if (~draw) {
+            do grid.unSetPos(pos);
+            do grid.drawPos(pos);
+        }
+        let pos = grid.up(pos);
+        do grid.setPos(pos);
+        return;
+    }
+    method void moveDown() {
+        if (~draw) {
+            do grid.unSetPos(pos);
+            do grid.drawPos(pos);
+        }
+        let pos = grid.down(pos);
+        do grid.setPos(pos);
+        return;
+    }
+
+    method void step() {
+        var char key;
+        let key = Keyboard.keyPressed();
+
+        if (key = 32) { //spacebar to toggle draw mode
+            let draw = true;
+            // do Sys.wait(500); //so we don't double count spacebar hits
+        }
+        if (key = 130) {
+            do moveLeft();
+            let draw = false;               
+        }
+        if (key = 131) {
+            do moveUp();
+            let draw = false;
+        }
+        if (key = 132) {
+            do moveRight();
+            let draw = false;
+        }
+        if (key = 133) {
+            do moveDown();
+            let draw = false;
+        }
+        if (key = 140) {
+            let done = true;
+        }
+        do grid.drawPos(pos);
+        return;
+    }
+
+    method Grid state() {
+        return grid;
+    }
+
+    method bool done() {
+        return done;
+    }
+    method void dispose() {
+        do grid.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

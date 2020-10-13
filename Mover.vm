@@ -1,0 +1,236 @@
+function Mover.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push this 0
+call Grid.center 1
+pop this 1
+push this 0
+push this 1
+call Grid.setPos 2
+pop temp 0
+push constant 0
+pop this 2
+push constant 0
+not
+pop this 3
+push pointer 0
+return
+function Mover.mode 0
+push argument 0
+pop pointer 0
+push this 2
+not
+pop this 2
+push constant 0
+return
+function Mover.moveLeft 0
+push argument 0
+pop pointer 0
+push this 2
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+call Grid.unSetPos 2
+pop temp 0
+push this 0
+push this 1
+call Grid.drawPos 2
+pop temp 0
+label IF_FALSE0
+push this 0
+push this 1
+call Grid.left 2
+pop this 1
+push this 0
+push this 1
+call Grid.setPos 2
+pop temp 0
+push constant 0
+return
+function Mover.moveRight 0
+push argument 0
+pop pointer 0
+push this 2
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+call Grid.unSetPos 2
+pop temp 0
+push this 0
+push this 1
+call Grid.drawPos 2
+pop temp 0
+label IF_FALSE0
+push this 0
+push this 1
+call Grid.right 2
+pop this 1
+push this 0
+push this 1
+call Grid.setPos 2
+pop temp 0
+push constant 0
+return
+function Mover.moveUp 0
+push argument 0
+pop pointer 0
+push this 2
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+call Grid.unSetPos 2
+pop temp 0
+push this 0
+push this 1
+call Grid.drawPos 2
+pop temp 0
+label IF_FALSE0
+push this 0
+push this 1
+call Grid.up 2
+pop this 1
+push this 0
+push this 1
+call Grid.setPos 2
+pop temp 0
+push constant 0
+return
+function Mover.moveDown 0
+push argument 0
+pop pointer 0
+push this 2
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+call Grid.unSetPos 2
+pop temp 0
+push this 0
+push this 1
+call Grid.drawPos 2
+pop temp 0
+label IF_FALSE0
+push this 0
+push this 1
+call Grid.down 2
+pop this 1
+push this 0
+push this 1
+call Grid.setPos 2
+pop temp 0
+push constant 0
+return
+function Mover.step 1
+push argument 0
+pop pointer 0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 32
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop this 2
+label IF_FALSE0
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Mover.moveLeft 1
+pop temp 0
+push constant 0
+pop this 2
+label IF_FALSE1
+push local 0
+push constant 131
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call Mover.moveUp 1
+pop temp 0
+push constant 0
+pop this 2
+label IF_FALSE2
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+call Mover.moveRight 1
+pop temp 0
+push constant 0
+pop this 2
+label IF_FALSE3
+push local 0
+push constant 133
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call Mover.moveDown 1
+pop temp 0
+push constant 0
+pop this 2
+label IF_FALSE4
+push local 0
+push constant 140
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+not
+pop this 4
+label IF_FALSE5
+push this 0
+push this 1
+call Grid.drawPos 2
+pop temp 0
+push constant 0
+return
+function Mover.state 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Mover.done 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Mover.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Grid.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

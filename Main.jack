@@ -1,0 +1,34 @@
+class Main {
+    function void main() {
+        
+        var Mover mover;
+        var Life life;
+        var int size, startLn;
+        var String startIn;
+        var Grid grid, moverOut;
+        var bool drawn;
+        var char key;
+
+        let size = Keyboard.readInt("Cell size? ");
+        let grid = Grid.new(size);
+        do Screen.clearScreen();
+        // let startLn = Keyboard.readInt("Starting square?");
+        // do Screen.clearScreen();
+        let mover = Mover.new(grid);
+
+        while (~drawn) {
+            do mover.step();
+            let drawn = mover.done();
+            do Sys.wait(100);
+        }
+
+        let moverOut = mover.state();
+        let life = Life.new(moverOut);
+        while (true) {
+            do life.step();
+            // do Sys.wait(100);
+        }
+        
+        return;
+    }
+}

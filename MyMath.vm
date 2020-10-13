@@ -1,0 +1,30 @@
+function MyMath.mod 0
+push argument 0
+push argument 1
+push argument 0
+push argument 1
+call Math.divide 2
+call Math.multiply 2
+sub
+return
+function MyMath.pow 1
+push constant 1
+pop local 0
+label WHILE_EXP0
+push argument 1
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push local 0
+push argument 0
+call Math.multiply 2
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
