@@ -1,0 +1,13 @@
+//Data structure for holding an array of single bit data, up to 16x int ceiling
+class BitArray {
+
+    field Array data;
+
+    constructor BitArray new(int size){
+        //input size is number of 16 bit addresses needed to store (should be ceil([# elements/16])
+        let data = Array.new(size);
+        return this;
+    }
+
+
+}
