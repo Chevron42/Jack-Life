@@ -200,6 +200,18 @@ class Grid {
         do ns.dispose();
         return;
     }
+    //increase int value of all neighbors by one (for neighborCount)
+    method void incNeighbors(int pos) {
+        var int i;
+        var Array ns;
+        let ns = neighbors(pos);
+        while (i < 8) {
+            let cells[ns[i]] = cells[ns[i]] + 1;
+            let i = i + 1;
+        }
+        do ns.dispose();
+        return;
+    }
 
     //number of currently live neighbors a given position has
     method int liveNeighbors(int pos) {
@@ -218,6 +230,7 @@ class Grid {
         return l;
     }
 
+    
     //calculate list of live cells for next frame
     method Array nextGen() {
         var Array next;
@@ -225,22 +238,7 @@ class Grid {
         let i = 0;
         let next = Array.new(area);
         while (i < area) {
-            let lns = liveNeighbors(i);
-            //debug print neighbor count
-            // do Output.printInt(lns);
-            let next[i] = false;
-            if (cells[i]) {
-                //a live cell with 2 or 3 neighbors survives
-                if ((lns = 2) | (lns = 3)) {
-                    let next[i] = true;
-                }
-            }
-            //dead cells with 3 neighbors gain life
-            else {
-                if (lns = 3) {
-                    let next[i] = true;
-                }
-            }
+            let next[i] = cellLives(i);
             let i = i + 1;
         }
         let i = 0;
@@ -251,12 +249,75 @@ class Grid {
         return next;
     }
 
+    //potentially faster nextGen that uses alternative neighbor counting
+    method Array nextGen2() {
+        var Array next, counts;
+        var int i;
+        let counts = liveNeighborCounts();
+        let i = 0;
+        let next = Array.new(area);
+        while (i < area) {
+            if ((counts[i] = 3) | (counts[i] = 2) & cells[i]) {
+                let next[i] = true;
+            }
+            else {
+                let next[i] = false;
+            }
+            let i = i + 1;
+        }
+        do counts.dispose();
+        return next;
+    }
+    //returns whether a cell lives in the next generation
+    method Array cellLives(int pos) {
+        var int lns;
+        var bool lives;
+        let lns = liveNeighbors(pos);
+        let lives = false;
+        if (cells[pos]) {
+            //a live cell with 2 or 3 neighbors survives
+            if ((lns = 2) | (lns = 3)) {
+                let lives = true;
+            }
+        }
+        //dead cells with 3 neighbors gain life
+        else {
+            if (lns = 3) {
+                let lives = true;
+            }
+        }
+        return lives;
+    }
+
+    //builds neighborcount of all cells
+    method Array liveNeighborCounts() {
+        var int i;
+        var Array ret;
+        //new grid to hold each cells live neighbor count
+        var Grid counter; 
+        let counter = Grid.new(area);
+        let i = 0;
+        //after the loop counter will hold every cells count of live neighbors
+        //this only runs neighbor methods on live cells instead of all cells
+        while (i < area) {
+            if (cells[i]) {
+                do counter.incNeighbors(i);
+            }
+            let i = i + 1;
+        }
+        //we only need counter's cells array
+        let ret = counter.cells();
+        do counter.dispose();
+        return ret;
+    }
+
+
     //replace current board with new one (just the array, doesn't redraw)
     method void step() {
         var Array temp;
         var int i;
         let i = 0;
-        let temp = nextGen();
+        let temp = nextGen2();
         // do cells.dispose();
         // let cells = temp;
         while (i < area) {
