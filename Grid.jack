@@ -200,13 +200,14 @@ class Grid {
         do ns.dispose();
         return;
     }
-    //increase int value of all neighbors by one (for neighborCount)
-    method void incNeighbors(int pos) {
+    //increase int value of all neighbors  of input array by one (for neighborCount)
+    //set input array to cells to do to self, but intended for a counter array
+    method void incNeighbors(int pos, Array arr) {
         var int i;
         var Array ns;
         let ns = neighbors(pos);
         while (i < 8) {
-            let cells[ns[i]] = cells[ns[i]] + 1;
+            let arr[ns[i]] = arr[ns[i]] + 1;
             let i = i + 1;
         }
         do ns.dispose();
@@ -257,11 +258,9 @@ class Grid {
         let i = 0;
         let next = Array.new(area);
         while (i < area) {
-            if ((counts[i] = 3) | (counts[i] = 2) & cells[i]) {
+            let next[i] = false;
+            if ((counts[i] = 3) | ((counts[i] = 2) & cells[i])) {
                 let next[i] = true;
-            }
-            else {
-                let next[i] = false;
             }
             let i = i + 1;
         }
@@ -292,23 +291,23 @@ class Grid {
     //builds neighborcount of all cells
     method Array liveNeighborCounts() {
         var int i;
-        var Array ret;
-        //new grid to hold each cells live neighbor count
-        var Grid counter; 
-        let counter = Grid.new(area);
+        var Array counter;
+
+        let counter = Array.new(area);
+        do MyLib.zeroArray(counter, area);
         let i = 0;
         //after the loop counter will hold every cells count of live neighbors
         //this only runs neighbor methods on live cells instead of all cells
         while (i < area) {
             if (cells[i]) {
-                do counter.incNeighbors(i);
+                do incNeighbors(i, counter);
             }
             let i = i + 1;
         }
-        //we only need counter's cells array
-        let ret = counter.cells();
-        do counter.dispose();
-        return ret;
+        //debug
+        // do MyLib.prIntArray(counter, area);
+        // do Sys.wait(5000);
+        return counter;
     }
 
 
