@@ -22,7 +22,7 @@ Jack is a Java-like barebones object-oriented language that runs on the Hack vir
 ## Using the App
 
 1. Enter cell size in pixels at startup screen. 
-   * The VM is fairly slow, and as implemented right now I get about 1 grid generation per second if I choose a cell size of 16 pixels. Larger cells = less update logic = faster refresh rate. I expect this could be optimized. Cell sizes under 4 pixels won't work because of memory errors I might fix eventually. 5px cell size takes about 8 seconds per frame update.
+   * The VM is fairly slow, and at small cell sizes (i.e. higher grid resolution) calculating generations spikes in computation time. Since the first version I've improved performance here, but cell sizes below 16px are still going to get slow, especially in grid states with a lot of live cells.
 2. Draw an initial grid state. The initial version here has very basic drawing interface. The exact logic of the drawing stage is:
 
    * Single arrow key presses move the "cursor" square
