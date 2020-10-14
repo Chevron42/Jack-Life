@@ -7,6 +7,46 @@ call Math.divide 2
 call Math.multiply 2
 sub
 return
+function MyMath.ceilDiv 2
+push argument 0
+push argument 1
+call Math.divide 2
+pop local 0
+push argument 0
+push argument 1
+call MyMath.mod 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push constant 1
+add
+return
+label IF_FALSE0
+push local 0
+return
+function MyMath.roundDiv 3
+push argument 0
+push argument 1
+call Math.divide 2
+pop local 0
+push argument 0
+push argument 1
+call MyMath.mod 2
+push local 0
+push constant 2
+call Math.divide 2
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push constant 1
+add
+return
+label IF_FALSE0
+push local 0
+return
 function MyMath.pow 1
 push constant 1
 pop local 0

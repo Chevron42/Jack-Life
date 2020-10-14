@@ -1,9 +1,33 @@
 class MyMath {
 
+    //x%y
     function int mod(int x, int y) {
         return (x - (y * (x/y)) );
     }
 
+    //returns x/y, rounded up if there is any remainder
+    function int ceilDiv(int x, int y) {
+        var int quot, ret;
+
+        let quot = x/y;
+        if (MyMath.mod(x, y)) {
+            return quot + 1;
+        }
+        return quot;
+    }
+
+    //returns rounded quotient (5 rounds down)
+    function int roundDiv(int x, int y) {
+        var int quot, r, ret;
+
+        let quot = x/y;
+        if (MyMath.mod(x,y) > (quot/2)) {
+            return quot + 1;
+        }
+        return quot;
+    }
+
+    //x**y
     function int pow(int x, int y) {
         var int ret;
         let ret = 1;

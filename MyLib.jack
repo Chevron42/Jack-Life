@@ -1,0 +1,23 @@
+class MyLib {
+    
+    //print the contents of an integer array
+    function void prIntArray(Array arr, int len) {
+        var int i;
+        let i = 0;
+        while (i < len) {
+            do Output.printInt(arr[i]);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    function void zeroArray(Array arr, int len) {
+        var int i;
+        let i = 0;
+        while (i < len) {
+            let arr[i] = 0;
+            let i = i + 1;
+        }
+        return;
+    }
+}
