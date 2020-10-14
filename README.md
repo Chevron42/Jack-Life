@@ -31,7 +31,13 @@ Jack is a Java-like barebones object-oriented language that runs on the Hack vir
 3. Press escape to begin automaton animation.
 4. To stop, press the stop button, to start over click the double left arrow, and then the run.
 
-### Changelog
+
+### Modifying the App
+
+If you feel like playing with the code, you probably already know how the basic Hack environment works, but essentially you make whatever changes you want to the .jack code, then run JackCompiler&#46;sh in the code directory to update all the .vm files, and then the VMEmulator will run the new code next time you load the program. I've included the basic [Jack OS API](./Jack_OS_API.pdf) pdf for reference, but you'll need to know more about the language of course (covered in [Module 3](https://www.coursera.org/learn/nand2tetris2/supplement/Akcna/module-overview-start-here) of Nand2tetris Part 2)
+
+
+#### Changelog
 
 10/13/2020
 * Modified the generation iterating method to significantly speed up performance on sparse grids. 
