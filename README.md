@@ -33,5 +33,11 @@ Jack is a Java-like barebones object-oriented language that runs on the Hack vir
 
 ### Changelog
 
+10/13/2020
+* Modified the generation iterating method to significantly speed up performance on sparse grids. 
+   * The live-neighbor counting now scales in speed as the board has fewer live cells by avoiding unnecessarily checking live neighbors everywhere. For a single glider in a 16px grid, this meant a speed increase of about 5x, probably scaling down to about the same speed as before when calculating a generation on a grid full of live cells.
+* Added MyLib.jack and a couple of helper methods 
+
 10/12/2020:
 * Got it working. May or may not tweak it at all in the future. Made my first real GH repo which was fun.
+
