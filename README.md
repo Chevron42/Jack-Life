@@ -28,7 +28,8 @@ Jack is a Java-like barebones object-oriented language that runs on the Hack vir
    * Single arrow key presses move the "cursor" square
    * Pressing spacebar will make the cursor leave a "living" cell behind when it moves next
    * Otherwise, after moving the cell will be left blank (i.e. default behavior of the cursor is as an eraser)
-3. Press escape to begin automaton animation.
+   * The current cell occupied by the cursor is considered live when you start the animation, so whenever you do so, WYSIWYG
+3. Press escape to start the automaton
 4. To stop, press the stop button, to start over click the double left arrow, and then the run.
 
 
