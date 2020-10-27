@@ -32,7 +32,7 @@ push constant 0
 pop local 1
 push constant 0
 pop local 2
-push constant 5000
+push constant 1500
 pop local 3
 push constant 0
 pop local 4
@@ -54,8 +54,9 @@ push local 4
 push constant 1
 add
 pop local 4
-push constant 32000
-call Math.sqrt 1
+push constant 530
+push constant 2452
+call Math.multiply 2
 pop local 1
 push local 4
 push local 5

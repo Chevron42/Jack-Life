@@ -21,7 +21,7 @@ class Keyboard {
      *
      * Recognizes all ASCII characters, as well as the following keys:
      * new line = 128 = String.newline()
-     * backspace = 129 = String.backspace()
+     * backSpace = 129 = String.backSpace()
      * left arrow = 130
      * up arrow = 131
      * right arrow = 132
@@ -68,7 +68,7 @@ class Keyboard {
     /**								
      * Displays the message on the screen, reads from the keyboard the entered
      * text until a newline character is detected, echoes the text to the screen,
-     * and returns its value. Also handles user backspaces.
+     * and returns its value. Also handles user backSpaces.
      */
     function String readLine(String message) {
         var char key;
@@ -85,16 +85,16 @@ class Keyboard {
         do Output.printString(message);
 
         while(~(key = 128)) {
-            //handle backspaces
+            //handle backSpaces
             if (key = 129) {
-                //if we're at first character ignore backspace, otherwise decrement char count and clear top char value and move the cursor back with Output.backspace
+                //if we're at first character ignore backSpace, otherwise decrement char count and clear top char value and move the cursor back with Output.backSpace
                 if (~(chars = 0)) {
                     let chars = chars - 1;
                     let input[chars] = 0;
-                    do Output.backspace();
+                    do Output.backSpace();
                 }
             }
-            //what to do if not backspace
+            //what to do if not backSpace
             else {
                 //if the Array is full, make it a new bigger one
                 if (chars = bufferLength) {
@@ -138,7 +138,7 @@ class Keyboard {
      * Displays the message on the screen, reads from the keyboard the entered
      * text until a newline character is detected, echoes the text to the screen,
      * and returns its integer value (until the first non-digit character in the
-     * entered text is detected). Also handles user backspaces. 
+     * entered text is detected). Also handles user backSpaces. 
      */
     function int readInt(String message) {
         var String input;

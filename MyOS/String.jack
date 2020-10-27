@@ -128,7 +128,7 @@ class String {
         return 128;
     }
 
-    /** Returns the backspace character. */
+    /** Returns the backSpace character. */
     function char backSpace() {
         return 129;
     }

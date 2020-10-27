@@ -91,7 +91,7 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-call Output.backspace 0
+call Output.backSpace 0
 pop temp 0
 label IF_FALSE_2
 goto ELSE_SKIP_1

@@ -493,10 +493,10 @@ pop temp 0
 push constant 65
 push constant 12
 push constant 30
+push constant 18
+push constant 18
+push constant 30
 push constant 51
-push constant 51
-push constant 63
-push constant 63
 push constant 51
 push constant 51
 push constant 51

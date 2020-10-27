@@ -35,14 +35,15 @@ class Sys {
         let a = 0;
         let b = 0;
         let r = 0;
-        let reps = 5000;
+        let reps = 1500;
         let m = 0;
         let interval = 10; //how many rep loops it takes for r to inc by 1
 
         while (a < duration) {
             while (r < reps) {
                 let m = m + 1;
-                let b = Math.sqrt(32000);
+                // let b = Math.sqrt(32000);
+                let b = 530 * 2452;
                 if ((m/interval) = 1) { 
                     let r = r + 1;
                     let m = 0;
