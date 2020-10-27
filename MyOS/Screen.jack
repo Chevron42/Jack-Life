@@ -1,0 +1,204 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Screen.jack
+
+/**
+ * A library of functions for displaying graphics on the screen.
+ * The Hack physical screen consists of 512 rows (indexed 0..511, top to bottom)
+ * of 256 pixels each (indexed 0..255, left to right). The top left pixel on 
+ * the screen is indexed (0,0).
+ */
+class Screen {
+    static Array screenReg;
+    static boolean color;
+    /** Initializes the Screen. */
+    function void init() {
+        let screenReg = 16384;
+        do clearScreen();
+        let color = true;
+        return;
+    }
+
+    /** Erases the entire screen. */
+    function void clearScreen() {
+        var Point block;
+        let block = screenReg;
+        //loop through all registers of screen segment, setting to 0
+        while (block < 24576) {
+            do Memory.poke(block, 0);
+            let block = block + 1;
+        }
+        return;
+    }
+
+    /** Sets the current color, to be used for all subsequent drawXXX commands.
+     *  Black is represented by true, white by false. */
+    function void setColor(boolean b) {
+        let color = b;
+        return;
+    }
+
+    /** Draws the (x, y) pixel, using the current color. */
+    function void drawPixel(int x, int y) {
+        var Point register;
+        var int regX, bit, i;
+        let register = 0;
+
+        //each row has 32 registers, increment by 32y
+        let register = register + (y * 32);
+
+        //every register covers 16 x positions, so increment by x/16
+        let register = register + (x / 16);
+
+        //get the bitstring with a 1 in the correct pixel position
+        let regX = x - (16 * (x/16)); //x % 16
+        let i = 0;
+        let bit = 1;
+        while (i < regX) { //double bit regX times
+            let bit = bit + bit;
+            let i = i + 1;
+        }
+        //if color is false (white) we flip the value (all 1s except bit to erase) and bitwise and to set screenReg value to what it was minus that pixel
+        if (~color) {
+            let screenReg[register] = screenReg[register] & (~bit);
+        }
+
+        //if color is set to black, bit stays with a 1 only in pixel to color, and we bitwise or to flip it on if its off
+        if (color) {
+            let screenReg[register] = (screenReg[register] | (bit & color));
+
+        }
+        return;
+    }
+
+    /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+        var int x, y, lx, rx, ry, ly, dy, dx, Dy, Dx, ydir;
+
+        //bool|1 --> false | 1 = 1; true | 1 = -1; so (direction) | 1 gives opposite sign, hence x1 > x2 where we want to yield -1
+        //xdir and ydir are 1 or -1 and let us generalize things like incrementing and slope stuff
+        //e.g. y + ydir pushes y towards y2 from y1 no matter signs
+        //and multiply both sides, as y approaches y2 ydir(y) is always less then ydir(y2)
+        if (x2 > x1) {
+            let lx = x1;
+            let ly = y1;
+            let rx = x2;
+            let ry = y2;
+        }
+        else {
+            let lx = x2;
+            let ly = y2;
+            let rx = x1;
+            let ry = y1;
+        }
+        //Dx and Dy are total distances over the run of the drawn line
+        let Dx = rx - lx;
+        let Dy = ry - ly;
+        //ry < ly means negative slope, and true | 1 is negative one, if its false it's 0 | 1 and gives positive one
+        let x = lx;
+        let y = ly;
+        let ydir = ((ry < ly) | 1);
+        do Screen.drawPixel(x, y);
+
+        //special cases for speed:
+        //vertical line
+        if (x1 = x2) {
+            //if you called drawline on a single point, nothing to do beyond initial draw
+            if (y2 = y1) {
+                return;
+            }
+            //inch up y appropriately
+            while (~(y = ry)) {
+                let y = y + ydir;
+                do Screen.drawPixel(x, y);
+            }
+            return;
+        }
+        ///*Comment to turn off horizontal optimization
+        //horizontal line
+        if (y1 = y2) {
+            //interesting because we can optimize on register arithmetic
+
+            //while we have at least a registers worth to go, and havent hit the start of a register yet, draw
+
+
+            while ((x < rx) & ((rx - x) > 15) & ~((x - (16 * (x/16))) = 0)) {
+                do Screen.drawPixel(x, y);
+        
+                let x = x + 1;
+            }
+            //if we hit a register but still have >15 pixels to draw, start poking screen registers
+            while ((x < rx) & ((rx - x) > 15)) {
+                let screenReg[y*32 + (x/16)] = color;
+                let x = x + 16;
+            }
+            //if we're withn 15 but still have pixels to draw, draw
+            while (x < rx) {
+                do Screen.drawPixel(x, y);
+                let x = x + 1;
+            }
+            return;
+        }
+        //*/
+        while (~((x = rx) & (y = ry))) {
+            let dx = x - lx;
+            let dy = y - ly;
+            if (Math.abs(dy*Dx) > Math.abs(Dy*dx)) { //slope to where we are is larger than slope to dest
+                let x = x + 1;
+                do Screen.drawPixel(x,y);
+            }
+            else {
+                if (Math.abs(dy*Dx) < Math.abs(Dy*dx)) {
+                    let y = y + ydir;
+                    do Screen.drawPixel(x,y);
+                }
+                else { //we're right on slope
+                    if (Math.abs(Dy) > Dx) {
+                        let y = y + ydir;
+                    }
+                    else {
+                        let x = x + 1;
+                    }
+                    do Screen.drawPixel(x,y);
+                }
+            }
+            
+        }
+        return;
+    }
+
+    /** Draws a filled rectangle whose top left corner is (x1, y1)
+     * and bottom right corner is (x2,y2), using the current color. */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+        var int y, ydir;
+        let y = y1;
+        //if y2 is smaller, we want to decrease y as we draw
+        // y2 < y1 will be true, i.e. -1
+        // if it's false (0), oring it with 1 will give us 1
+        //so adding ydir will subtract 1 if y2 is smaller, add otherwise
+        let ydir = ((y2 < y1) | 1);
+        do Screen.drawLine(x1, y1, x2, y1);
+        let y = y + ydir;
+        while (~(y = y2)) {
+            do Screen.drawLine(x1, y, x2, y);
+            let y = y+ ydir;
+        }
+        return;
+    }
+
+    /** Draws a filled circle of radius r<=181 around (x, y), using the current color. */
+    function void drawCircle(int x, int y, int r) {
+        var int h, side; //h = vert circle pos, side = length from center to sides of circle at h height
+
+        //h is our "row" of the circle. start at top with center - radius y value
+        let h = y - r; 
+        while (h < (y + r + 1)) {
+            let side = Math.sqrt((r * r) - ((h-y) * (h-y))); //
+            do Screen.drawLine(x - side ,h ,x + side ,h);
+            let h = h + 1;
+        }
+        return;
+
+    }
+}

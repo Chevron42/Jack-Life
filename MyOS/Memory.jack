@@ -1,0 +1,114 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+
+    static Array ram;
+    static Point freeList;
+    static int heapHead, heapTail, heapSize;
+
+    /** Initializes the class. */
+    function void init() {
+        //set base of ram "array" to 0 so it accesses any memory location
+        let ram = 0;
+        //set base address of heap free space pointer
+        let heapHead = 2048; 
+        let heapTail = 16383;
+        let heapSize = heapTail - heapHead;
+        let freeList = heapHead;
+        // set size of available heap segment to entire heap
+        let freeList[1] = heapSize;
+        // set next available block to none
+        let freeList[0] = 0;
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        var Array freeBlock, smallestBlock, retBlock;
+        var boolean possible;
+        var int smallestSize;
+
+        let freeBlock = freeList;
+        let smallestSize = heapSize;
+
+
+        if (~(freeBlock[1] < (size + 2))) {
+            let possible = true;
+            let smallestBlock = freeBlock;
+            let smallestSize = freeBlock[1];
+        }
+
+        while (~(freeBlock[0]=0) & ~(smallestSize = (size + 2))) {
+            //look at next free block in chain
+            let freeBlock = freeBlock[0];
+
+            if (freeBlock[1] > (size + 1)) {
+                //if the block is large enough, set possible to true    
+                let possible = true;
+
+                //if it's also smaller than the previous smallest eligible block, set it to smalles free block
+                if (freeBlock[1] < smallestSize) {
+                    let smallestBlock = freeBlock;
+                    let smallestSize = freeBlock[1];
+                }
+            } 
+        }//loop ends when list does (freeBlock[0] = 0) or when we find an exact match; smallestBlock/Size hold the search results
+
+        //if we didnt find anything throw memory error
+        if (~possible) {
+            do Sys.error(5);
+        }
+
+        //leave the free block with its head intact to not screw up the freelist
+
+        //update its size to cut off space allocated
+        let smallestBlock[1] = smallestBlock[1] - (size + 2);
+        //this leaves the freeBlock in its finished state in the free list; it continues to point wherever, and has the right free size listed
+
+        //set out created block address to the parent it's carved from plus the remaining size of parent block
+        let retBlock = smallestBlock + smallestBlock[1] + 2;
+        let retBlock[1] = size;
+
+        return retBlock + 2;
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+        // var Array walk;
+        // let walk = freeList;
+        // //walk along freeList until pointing at 0 (end)
+        // while (walk) {
+        //     let walk = walk[0];
+        // }
+        // //simply point the last free block at the deallocated one, which itself now points at 0 thanks to alloc
+        // let walk[0] = o - 2;
+        // return;
+
+
+        //set the pointer header of the dealloc'd array to point at the freelist and change the head of the freelist to be the deallocated block
+        let o[-2] = freeList;
+        let freeList = o - 2;
+        return;
+    }    
+}

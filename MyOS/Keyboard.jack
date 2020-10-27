@@ -1,0 +1,150 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Keyboard.jack
+
+/**
+ * A library for handling user input from the keyboard.
+ */
+class Keyboard {
+
+    static Point keyReg;
+    /** Initializes the keyboard. */
+    function void init() {
+        let keyReg = 24576;
+        return;
+    } 
+
+    /**
+     * Returns the character of the currently pressed key on the keyboard;
+     * if no key is currently pressed, returns 0.
+     *
+     * Recognizes all ASCII characters, as well as the following keys:
+     * new line = 128 = String.newline()
+     * backspace = 129 = String.backspace()
+     * left arrow = 130
+     * up arrow = 131
+     * right arrow = 132
+     * down arrow = 133
+     * home = 134
+     * End = 135
+     * page up = 136
+     * page down = 137
+     * insert = 138
+     * delete = 139
+     * ESC = 140
+     * F1 - F12 = 141 - 152
+     */
+    function char keyPressed() {
+        return Memory.peek(keyReg);
+    }
+
+    /**								
+     * Waits until a key is pressed on the keyboard and released,
+     * then echoes the key to the screen, and returns the character 
+     * of the pressed key.
+     */
+    function char readChar() {
+        var char key;
+        let key = 0;
+        while (key = 0) {
+            //key will b 0 until its something
+            let key = keyPressed();
+        }
+        //print character
+        if (key = 128) {
+            do Output.println();
+        }
+        else {
+            do Output.printChar(key);
+        }
+        while(key) {
+            let key = keyPressed();
+        }
+        //also return character
+        return key;
+    }
+
+    /**								
+     * Displays the message on the screen, reads from the keyboard the entered
+     * text until a newline character is detected, echoes the text to the screen,
+     * and returns its value. Also handles user backspaces.
+     */
+    function String readLine(String message) {
+        var char key;
+        var Array input, overflow;
+        var int chars, bufferLength, i;
+        var String s;
+
+        let key = 0;
+        let chars = 0;
+        //size of array for accepting chars
+        let bufferLength = 30;
+        let input  = Array.new(bufferLength);
+
+        do Output.printString(message);
+
+        while(~(key = 128)) {
+            //handle backspaces
+            if (key = 129) {
+                //if we're at first character ignore backspace, otherwise decrement char count and clear top char value and move the cursor back with Output.backspace
+                if (~(chars = 0)) {
+                    let chars = chars - 1;
+                    let input[chars] = 0;
+                    do Output.backspace();
+                }
+            }
+            //what to do if not backspace
+            else {
+                //if the Array is full, make it a new bigger one
+                if (chars = bufferLength) {
+                    //copy input array to overlow 30 chars longer
+                    let bufferLength = bufferLength + 30;
+                    let overflow = Array.new(bufferLength);
+                    let i = 0;
+                    //copy existing chars to overflow array
+                    while (i < chars) {
+                        let overflow[i] = input[i];
+                        let i = i + 1;
+                    }
+                    //dispose original filled array and point input at the expanded overflow array
+                    //the next time overflow is used it will be assigned a new array
+                    do input.dispose();
+                    let input = overflow;
+                }
+                let key = readChar();
+                let input[chars] = key;
+                let chars = chars + 1;
+                //wait for key to be released
+                while (~(key=0)) {
+                    let key = keyPressed();
+                }
+
+            }
+        }
+        //while loop breaks when newline detected
+
+        //make a new String to hold our array of chars
+        let s = String.new(chars);
+        let i = 0;
+        while (i < chars) {
+            do s.appendChar(input[i]);
+        }
+        do input.dispose();
+        return s;
+    }   
+    
+    /**								
+     * Displays the message on the screen, reads from the keyboard the entered
+     * text until a newline character is detected, echoes the text to the screen,
+     * and returns its integer value (until the first non-digit character in the
+     * entered text is detected). Also handles user backspaces. 
+     */
+    function int readInt(String message) {
+        var String input;
+
+        //exact same as readline, except take the received string and get its int value
+        let input =  readLine(message);
+        return input.intValue();
+    }
+}
