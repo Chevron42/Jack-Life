@@ -31,9 +31,9 @@ push argument 0
 pop pointer 0
 push this 2
 not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_0
+goto IF_FALSE_0
+label IF_TRUE_0
 push this 0
 push this 1
 call Grid.unSetPos 2
@@ -42,7 +42,7 @@ push this 0
 push this 1
 call Grid.drawPos 2
 pop temp 0
-label IF_FALSE0
+label IF_FALSE_0
 push this 0
 push this 1
 call Grid.left 2
@@ -58,9 +58,9 @@ push argument 0
 pop pointer 0
 push this 2
 not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_1
+goto IF_FALSE_1
+label IF_TRUE_1
 push this 0
 push this 1
 call Grid.unSetPos 2
@@ -69,7 +69,7 @@ push this 0
 push this 1
 call Grid.drawPos 2
 pop temp 0
-label IF_FALSE0
+label IF_FALSE_1
 push this 0
 push this 1
 call Grid.right 2
@@ -85,9 +85,9 @@ push argument 0
 pop pointer 0
 push this 2
 not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_2
+goto IF_FALSE_2
+label IF_TRUE_2
 push this 0
 push this 1
 call Grid.unSetPos 2
@@ -96,7 +96,7 @@ push this 0
 push this 1
 call Grid.drawPos 2
 pop temp 0
-label IF_FALSE0
+label IF_FALSE_2
 push this 0
 push this 1
 call Grid.up 2
@@ -112,9 +112,9 @@ push argument 0
 pop pointer 0
 push this 2
 not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_3
+goto IF_FALSE_3
+label IF_TRUE_3
 push this 0
 push this 1
 call Grid.unSetPos 2
@@ -123,7 +123,7 @@ push this 0
 push this 1
 call Grid.drawPos 2
 pop temp 0
-label IF_FALSE0
+label IF_FALSE_3
 push this 0
 push this 1
 call Grid.down 2
@@ -142,71 +142,71 @@ pop local 0
 push local 0
 push constant 32
 eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_4
+goto IF_FALSE_4
+label IF_TRUE_4
 push constant 0
 not
 pop this 2
-label IF_FALSE0
+label IF_FALSE_4
 push local 0
 push constant 130
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE_5
+goto IF_FALSE_5
+label IF_TRUE_5
 push pointer 0
 call Mover.moveLeft 1
 pop temp 0
 push constant 0
 pop this 2
-label IF_FALSE1
+label IF_FALSE_5
 push local 0
 push constant 131
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE_6
+goto IF_FALSE_6
+label IF_TRUE_6
 push pointer 0
 call Mover.moveUp 1
 pop temp 0
 push constant 0
 pop this 2
-label IF_FALSE2
+label IF_FALSE_6
 push local 0
 push constant 132
 eq
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
+if-goto IF_TRUE_7
+goto IF_FALSE_7
+label IF_TRUE_7
 push pointer 0
 call Mover.moveRight 1
 pop temp 0
 push constant 0
 pop this 2
-label IF_FALSE3
+label IF_FALSE_7
 push local 0
 push constant 133
 eq
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
+if-goto IF_TRUE_8
+goto IF_FALSE_8
+label IF_TRUE_8
 push pointer 0
 call Mover.moveDown 1
 pop temp 0
 push constant 0
 pop this 2
-label IF_FALSE4
+label IF_FALSE_8
 push local 0
 push constant 140
 eq
-if-goto IF_TRUE5
-goto IF_FALSE5
-label IF_TRUE5
+if-goto IF_TRUE_9
+goto IF_FALSE_9
+label IF_TRUE_9
 push constant 0
 not
 pop this 4
-label IF_FALSE5
+label IF_FALSE_9
 push this 0
 push this 1
 call Grid.drawPos 2

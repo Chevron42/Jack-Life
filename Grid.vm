@@ -144,12 +144,12 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_0
 push local 0
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_0
 push pointer 0
 push local 0
 call Grid.getXY 2
@@ -171,8 +171,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_0
+label WHILE_BREAK_0
 push local 1
 call Array.dispose 1
 pop temp 0
@@ -214,12 +214,12 @@ push argument 0
 pop pointer 0
 push constant 0
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_1
 push local 0
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_1
 push pointer 0
 push local 0
 call Grid.getXY 2
@@ -241,19 +241,19 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_1
+label WHILE_BREAK_1
 push constant 0
 return
 function Grid.drawGrid 2
 push argument 0
 pop pointer 0
-label WHILE_EXP0
+label WHILE_TOP_2
 push local 0
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_2
 push pointer 0
 push local 0
 call Grid.drawPos 2
@@ -262,8 +262,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_2
+label WHILE_BREAK_2
 push constant 0
 return
 function Grid.drawXY 1
@@ -286,12 +286,12 @@ pop pointer 0
 push argument 1
 push this 3
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_0
+goto IF_FALSE_0
+label IF_TRUE_0
 push constant 0
 return
-label IF_FALSE0
+label IF_FALSE_0
 push pointer 0
 push argument 1
 call Grid.getXY 2
@@ -353,12 +353,12 @@ pop local 0
 push local 0
 push constant 512
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_1
+goto IF_FALSE_1
+label IF_TRUE_1
 push constant 0
 return
-label IF_FALSE0
+label IF_FALSE_1
 push local 0
 push this 4
 add
@@ -565,12 +565,12 @@ push pointer 0
 push argument 1
 call Grid.neighbors 2
 pop local 1
-label WHILE_EXP0
+label WHILE_TOP_3
 push local 0
 push constant 8
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_3
 push local 0
 push local 1
 add
@@ -588,8 +588,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_3
+label WHILE_BREAK_3
 push local 1
 call Array.dispose 1
 pop temp 0
@@ -602,12 +602,12 @@ push pointer 0
 push argument 1
 call Grid.neighbors 2
 pop local 1
-label WHILE_EXP0
+label WHILE_TOP_4
 push local 0
 push constant 8
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_4
 push local 0
 push local 1
 add
@@ -634,8 +634,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_4
+label WHILE_BREAK_4
 push local 1
 call Array.dispose 1
 pop temp 0
@@ -652,12 +652,12 @@ push pointer 0
 push argument 1
 call Grid.neighbors 2
 pop local 2
-label WHILE_EXP0
+label WHILE_TOP_5
 push local 0
 push constant 8
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_5
 push local 0
 push local 2
 add
@@ -667,20 +667,20 @@ push this 4
 add
 pop pointer 1
 push that 0
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_2
+goto IF_FALSE_2
+label IF_TRUE_2
 push local 1
 push constant 1
 add
 pop local 1
-label IF_FALSE0
+label IF_FALSE_2
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_5
+label WHILE_BREAK_5
 push local 2
 call Array.dispose 1
 pop temp 0
@@ -694,12 +694,12 @@ pop local 1
 push this 3
 call Array.new 1
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_6
 push local 1
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_6
 push local 1
 push local 0
 add
@@ -714,8 +714,8 @@ push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_6
+label WHILE_BREAK_6
 push constant 0
 pop local 1
 push local 0
@@ -731,12 +731,12 @@ pop local 2
 push this 3
 call Array.new 1
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_7
 push local 2
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_7
 push local 2
 push local 0
 add
@@ -766,9 +766,9 @@ pop pointer 1
 push that 0
 and
 or
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_3
+goto IF_FALSE_3
+label IF_TRUE_3
 push local 2
 push local 0
 add
@@ -778,13 +778,13 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-label IF_FALSE0
+label IF_FALSE_3
 push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_7
+label WHILE_BREAK_7
 push local 1
 call Array.dispose 1
 pop temp 0
@@ -804,9 +804,9 @@ push this 4
 add
 pop pointer 1
 push that 0
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_4
+goto IF_FALSE_4
+label IF_TRUE_4
 push local 0
 push constant 2
 eq
@@ -814,26 +814,26 @@ push local 0
 push constant 3
 eq
 or
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE_5
+goto IF_FALSE_5
+label IF_TRUE_5
 push constant 0
 not
 pop local 1
-label IF_FALSE1
-goto IF_END0
-label IF_FALSE0
+label IF_FALSE_5
+goto ELSE_SKIP_0
+label IF_FALSE_4
 push local 0
 push constant 3
 eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
+if-goto IF_TRUE_6
+goto IF_FALSE_6
+label IF_TRUE_6
 push constant 0
 not
 pop local 1
-label IF_FALSE2
-label IF_END0
+label IF_FALSE_6
+label ELSE_SKIP_0
 push local 1
 return
 function Grid.liveNeighborCounts 2
@@ -848,32 +848,32 @@ call MyLib.zeroArray 2
 pop temp 0
 push constant 0
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_8
 push local 0
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_8
 push local 0
 push this 4
 add
 pop pointer 1
 push that 0
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_7
+goto IF_FALSE_7
+label IF_TRUE_7
 push pointer 0
 push local 0
 push local 1
 call Grid.incNeighbors 3
 pop temp 0
-label IF_FALSE0
+label IF_FALSE_7
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_8
+label WHILE_BREAK_8
 push local 1
 return
 function Grid.step 2
@@ -884,12 +884,12 @@ pop local 1
 push pointer 0
 call Grid.nextGen2 1
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_9
 push local 1
 push this 3
 lt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_9
 push local 1
 push this 4
 add
@@ -906,8 +906,8 @@ push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_9
+label WHILE_BREAK_9
 push local 0
 call Array.dispose 1
 pop temp 0

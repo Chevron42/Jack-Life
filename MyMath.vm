@@ -15,14 +15,14 @@ pop local 0
 push argument 0
 push argument 1
 call MyMath.mod 2
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_0
+goto IF_FALSE_0
+label IF_TRUE_0
 push local 0
 push constant 1
 add
 return
-label IF_FALSE0
+label IF_FALSE_0
 push local 0
 return
 function MyMath.roundDiv 3
@@ -37,25 +37,25 @@ push local 0
 push constant 2
 call Math.divide 2
 gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE_1
+goto IF_FALSE_1
+label IF_TRUE_1
 push local 0
 push constant 1
 add
 return
-label IF_FALSE0
+label IF_FALSE_1
 push local 0
 return
 function MyMath.pow 1
 push constant 1
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_0
 push argument 1
 push constant 0
 gt
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_0
 push local 0
 push argument 0
 call Math.multiply 2
@@ -64,7 +64,7 @@ push argument 1
 push constant 1
 sub
 pop argument 1
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_0
+label WHILE_BREAK_0
 push local 0
 return

@@ -43,11 +43,11 @@ pop temp 0
 push local 5
 call Mover.new 1
 pop local 0
-label WHILE_EXP0
+label WHILE_TOP_0
 push local 7
 not
 not
-if-goto WHILE_END0
+if-goto WHILE_BREAK_0
 push local 0
 call Mover.step 1
 pop temp 0
@@ -57,23 +57,23 @@ pop local 7
 push constant 100
 call Sys.wait 1
 pop temp 0
-goto WHILE_EXP0
-label WHILE_END0
+goto WHILE_TOP_0
+label WHILE_BREAK_0
 push local 0
 call Mover.state 1
 pop local 6
 push local 6
 call Life.new 1
 pop local 1
-label WHILE_EXP1
+label WHILE_TOP_1
 push constant 0
 not
 not
-if-goto WHILE_END1
+if-goto WHILE_BREAK_1
 push local 1
 call Life.step 1
 pop temp 0
-goto WHILE_EXP1
-label WHILE_END1
+goto WHILE_TOP_1
+label WHILE_BREAK_1
 push constant 0
 return
